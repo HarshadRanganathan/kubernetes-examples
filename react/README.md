@@ -1,11 +1,11 @@
-# React App
+# React Container
 
 Pulls `stephengrider/multi-client` image for the container.
 
 ## Create Pod
 
 ```
-kubectl apply -f client-pod.yaml
+kubectl apply -f client-deployment.yaml
 ```
 
 ## Create Service
