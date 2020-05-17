@@ -1,0 +1,29 @@
+apiVersion: apps/v1 # kubectl api-versions
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    # recommended labels
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/version: "1.14.2"
+    app.kubernetes.io/component: proxy
+    environment: production
+spec: # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#deploymentspec-v1-apps
+  selector: # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#labelselector-v1-meta
+    matchLabels:
+      app: nginx
+  replicas: 10
+  strategy: 
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 2
+  template: # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podtemplatespec-v1-core
+    metadata: # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#objectmeta-v1-meta
+      labels:
+        app: nginx
+    spec: #https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core
+      containers:
+      - image: nginx:1.16.1
+        name: nginx
+        ports:
+        - containerPort: 80

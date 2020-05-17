@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-http
+  labels:
+    test: liveness
+spec:
+  containers:
+  - image: k8s.gcr.io/liveness
+    args: ['/server']
+    livenessProbe: # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#probe-v1-core
+      httpGet: 
+        path: /healthz
+        port: 8080
+        httpHeaders:
+        - name: X-Custom-Header
+          value: Awesome
+      initialDelaySeconds: 15
+    name: liveness

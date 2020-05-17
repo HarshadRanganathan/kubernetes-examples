@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+  labels:
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/version: "1.14.2"
+    app.kubernetes.io/component: proxy
+    environment: production
+spec: 
+  scaleTargetRef:
+    kind: ReplicaSet
+    name: nginx
+  minReplicas: 3
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 50

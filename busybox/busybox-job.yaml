@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: busybox-job
+  labels:
+    app.kubernetes.io/name: busybox
+    app.kubernetes.io/version: "latest"
+spec:
+  template:
+    spec:
+      containers:
+      - image: busybox
+        name: busybox
+        command: ['/bin/sh']
+        args: ['-c', 'echo "Hello Kubernetes!" && sleep 3600']
+      restartPolicy: OnFailure
