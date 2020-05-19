@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  selector: 
+    app: nginx
+  clusterIP: None
+  ports:
+  - port: 80 # if target port not given explicitly then value of this field is used
+    name: web
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  serviceName: nginx # responsible for the network identity of the set
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www # should match name of volume
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates: 
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ] # creates pv in standard storage class by default
+      resources: 
+        requests: 
+          storage: 1Gi

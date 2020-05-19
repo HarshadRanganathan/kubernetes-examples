@@ -1,0 +1,14 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  schedule: "*/1 * * * *"
+  template:
+    spec:
+      containers:
+      - image: busybox
+        name: hello
+        command: ['/bin/sh']
+        args: ['-c', 'echo "Hello Kubernetes!"']
+      restartPolicy: OnFailure
