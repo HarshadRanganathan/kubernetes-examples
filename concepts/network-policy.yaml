@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mynginx-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: mynginx
+  policyTypes: ["Ingress"]
